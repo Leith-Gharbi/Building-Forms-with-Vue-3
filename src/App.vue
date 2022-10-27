@@ -167,6 +167,60 @@
               <input type="submit" value="Next" class="btn btn-success" />
             </div>
           </div>
+
+          <div><strong>Credit Card</strong></div>
+          <div class="form-group">
+            <label for="ccNumber">Credit Card Number</label>
+            <input
+              class="form-control"
+              type="text"
+              v-model="payment.creditcard.number"
+              id="ccNumber"
+            />
+          </div>
+          <div class="form-group">
+            <label for="ccNumber">Name on Card</label>
+            <input
+              class="form-control"
+              type="text"
+              v-model="payment.creditcard.nameOnCard"
+              id="ccNumber"
+            />
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="expirationMonth">Expiration Month</label>
+                <select
+                  id="expirationMonth"
+                  v-model="payment.creditcard.expirationMonth"
+                  class="form-control"
+                >
+                  <option v-for="m in months" :key="m.number">
+                    {{ m.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="expirationMonth">Expiration Year</label>
+                <select
+                  id="expirationMonth"
+                  v-model="payment.creditcard.expirationYear"
+                  class="form-control"
+                >
+                  <option v-for="y in years" :key="y">
+                    {{ y }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="cvv">CVV Code</label>
+                <input
+                  v-model="payment.creditcard.cvv"
+                  class="form-control"
+                  id="cvv"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -178,6 +232,7 @@
 <script>
 import { ref, computed, watch } from "vue";
 import states from "@/lookup/states";
+import months from "@/lookup/months";
 import formatters from "@/formatters";
 export default {
   // this is for composition api
@@ -190,6 +245,7 @@ export default {
       billing: {
         sameAsShipping: false,
       },
+      creditcard: {},
     });
 
     const error = ref("");
@@ -197,7 +253,7 @@ export default {
     function onSave() {
       error.value = "We can't save yet, we don't have an API";
     }
-
+    const years = Array.from({ length: 10 }, (_, i) => i + 2020);
     const Zipcode = computed({
       get: () => payment.value.postalCode,
       set: (val) => {
@@ -232,7 +288,9 @@ export default {
       payment,
       error,
       states,
+      months,
       onSave,
+      years,
       ...formatters,
     };
   },
