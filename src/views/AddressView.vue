@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="border rounded p-2">
+    <slot />
     <div class="form-group">
       <label for="address1">Address</label>
       <input
