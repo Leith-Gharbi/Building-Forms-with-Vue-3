@@ -12,6 +12,7 @@
               id="name"
               class="form-control"
               placeholder="Your Name"
+              v-model="payment.fullName"
             />
           </div>
           <div class="form-group">
@@ -21,6 +22,7 @@
               id="company"
               class="form-control"
               placeholder="Company"
+              v-model="payment.company"
             />
           </div>
           <div class="form-group">
@@ -30,6 +32,7 @@
               id="address1"
               class="form-control"
               placeholder="Street Address"
+              v-model="payment.address1"
             />
           </div>
           <div class="form-group">
@@ -39,6 +42,7 @@
               id="address2"
               class="form-control"
               placeholder=""
+              v-model="payment.address2"
             />
           </div>
           <div class="form-row">
@@ -49,15 +53,23 @@
                 id="cityTown"
                 class="form-control"
                 placeholder="e.g. New York"
+                v-model="payment.cityTown"
               />
             </div>
             <div class="form-group col-md-3">
               <label for="stateProvince">State</label>
-              <select id="stateProvince" class="form-control">
-                <option>GA</option>
-                <option>CA</option>
-                <option>FL</option>
-                <option>AL</option>
+              <select
+                id="stateProvince"
+                class="form-control"
+                v-model="payment.stateProvince"
+              >
+                <option
+                  v-for="s in states"
+                  :key="s.abbreviation"
+                  :value="s.abbreviation"
+                >
+                  {{ s.name }}
+                </option>
               </select>
             </div>
             <div class="form-group col-md-3">
@@ -67,6 +79,7 @@
                 id="postalCode"
                 class="form-control"
                 placeholder="e.g. 10101"
+                v-model="payment.postalCode"
               />
             </div>
             <div class="form-group">
@@ -86,12 +99,17 @@
 </template>
 <script>
 import { ref } from "vue";
+import states from "@/lookup/states";
 export default {
   // this is for composition api
   setup() {
-    const payment = ref({});
+    const payment = ref({
+      fullName: "Shawn",
+      postalCode: "12345",
+    });
     return {
       payment,
+      states,
     };
   },
 };
