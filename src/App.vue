@@ -68,7 +68,7 @@
                   :key="s.abbreviation"
                   :value="s.abbreviation"
                 >
-                  {{ s.name }}
+                  {{ stateFormat(s) }}
                 </option>
               </select>
             </div>
@@ -79,7 +79,7 @@
                 id="postalCode"
                 class="form-control"
                 placeholder="e.g. 10101"
-                v-model="payment.postalCode"
+                v-model="Zipcode"
               />
             </div>
             <div class="form-group">
@@ -98,8 +98,9 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import states from "@/lookup/states";
+import formatters from "@/formatters";
 export default {
   // this is for composition api
   setup() {
@@ -110,10 +111,27 @@ export default {
     function onSave() {
       alert("save");
     }
+
+    const Zipcode = computed({
+      get: () => payment.value.postalCode,
+      set: (val) => {
+        if (val && typeof val === "string") {
+          if (val.length <= 5 || val.indexOf("-") > -1) {
+            payment.value.postalCode = val;
+          } else {
+            payment.value.postalCode = `${val.substring(0, 5)}-${val.substring(
+              5
+            )}`;
+          }
+        }
+      },
+    });
+
     return {
       payment,
       states,
       onSave,
+      ...formatters,
     };
   },
 };
