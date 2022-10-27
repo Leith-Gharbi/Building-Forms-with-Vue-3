@@ -1,5 +1,5 @@
 <template>
-  <payment-view />
+  <PaymentView />
 </template>
 <script>
 import PaymentView from "@/views/PaymentView";

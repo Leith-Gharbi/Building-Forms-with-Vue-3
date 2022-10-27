@@ -26,66 +26,10 @@
               v-model="payment.shipping.company"
             />
           </div>
+          <AddressView :address="payment.address" />
+
           <div class="form-group">
-            <label for="address1">Address</label>
-            <input
-              type="text"
-              id="address1"
-              class="form-control"
-              placeholder="Street Address"
-              v-model="payment.shipping.address1"
-            />
-          </div>
-          <div class="form-group">
-            <label for="address1">Suite/Appartement</label>
-            <input
-              type="text"
-              id="address2"
-              class="form-control"
-              placeholder=""
-              v-model="payment.shipping.address2"
-            />
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="cityTown">cityTown</label>
-              <input
-                type="text"
-                id="cityTown"
-                class="form-control"
-                placeholder="e.g. New York"
-                v-model="payment.shipping.cityTown"
-              />
-            </div>
-            <div class="form-group col-md-3">
-              <label for="stateProvince">State</label>
-              <select
-                id="stateProvince"
-                class="form-control"
-                v-model="payment.shipping.stateProvince"
-              >
-                <option
-                  v-for="s in states"
-                  :key="s.abbreviation"
-                  :value="s.abbreviation"
-                >
-                  {{ stateFormat(s) }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="postalCode">Zipcode</label>
-              <input
-                type="text"
-                id="postalCode"
-                class="form-control"
-                placeholder="e.g. 10101"
-                v-model="payment.shipping.postalCode"
-              />
-            </div>
-            <div class="form-group">
-              <input type="submit" value="Next" class="btn btn-success" />
-            </div>
+            <input type="submit" value="Next" class="btn btn-success" />
           </div>
         </div>
         <div class="col-md-6">
@@ -101,71 +45,14 @@
               >Same As Shipping?</label
             >
           </div>
+
+          <AddressView
+            :address="payment.billing"
+            :isDisabled="payment.billing.sameAsShipping"
+          ></AddressView>
+
           <div class="form-group">
-            <label for="address1">Address</label>
-            <input
-              type="text"
-              id="address1"
-              class="form-control"
-              placeholder="Street Address"
-              v-model="payment.billing.address1"
-              :disabled="payment.billing.sameAsShipping"
-            />
-          </div>
-          <div class="form-group">
-            <label for="address1">Suite/Appartement</label>
-            <input
-              type="text"
-              id="address2"
-              class="form-control"
-              placeholder=""
-              v-model="payment.billing.address2"
-              :disabled="payment.billing.sameAsShipping"
-            />
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="cityTown">cityTown</label>
-              <input
-                type="text"
-                id="cityTown"
-                class="form-control"
-                placeholder="e.g. New York"
-                v-model="payment.billing.cityTown"
-                :disabled="payment.billing.sameAsShipping"
-              />
-            </div>
-            <div class="form-group col-md-3">
-              <label for="stateProvince">State</label>
-              <select
-                id="stateProvince"
-                class="form-control"
-                v-model="payment.billing.stateProvince"
-                :disabled="payment.billing.sameAsShipping"
-              >
-                <option
-                  v-for="s in states"
-                  :key="s.abbreviation"
-                  :value="s.abbreviation"
-                >
-                  {{ stateFormat(s) }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="postalCode">Zipcode</label>
-              <input
-                type="text"
-                id="postalCode"
-                class="form-control"
-                placeholder="e.g. 10101"
-                v-model="payment.billing.postalCode"
-                :disabled="payment.billing.sameAsShipping"
-              />
-            </div>
-            <div class="form-group">
-              <input type="submit" value="Next" class="btn btn-success" />
-            </div>
+            <input type="submit" value="Next" class="btn btn-success" />
           </div>
 
           <div><strong>Credit Card</strong></div>
@@ -235,9 +122,11 @@ import states from "@/lookup/states";
 import months from "@/lookup/months";
 import formatters from "@/formatters";
 import Error from "@/components/Error.vue";
+import AddressView from "./AddressView";
 export default {
   components: {
     Error,
+    AddressView,
   },
   // this is for composition api
   setup() {

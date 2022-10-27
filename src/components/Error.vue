@@ -12,7 +12,7 @@ export default {
     },
   },
   setup() {
-    console.log(props.message);
+    //console.log(props.message);
     return {};
   },
 };
