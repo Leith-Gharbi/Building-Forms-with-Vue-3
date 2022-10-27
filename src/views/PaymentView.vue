@@ -1,7 +1,6 @@
 <template>
   <div>
     <h3>Payment</h3>
-    <Error :message="error" />
     <form novalidate @submit.prevent="onSave">
       <div class="row">
         <div class="col-md-6">
@@ -119,19 +118,18 @@
   </div>
 </template>
   <script>
-import { ref, computed, watch } from "vue";
+import { computed, watch } from "vue";
 import states from "@/lookup/states";
 import months from "@/lookup/months";
 import formatters from "@/formatters";
-import Error from "@/components/Error.vue";
 import AddressView from "./AddressView";
 export default {
   components: {
-    Error,
     AddressView,
   },
+  emits: ["onError"],
   // this is for composition api
-  setup() {
+  setup(props, { emit }) {
     const payment = ref({
       shipping: {
         fullName: "Shawn",
@@ -143,10 +141,8 @@ export default {
       creditcard: {},
     });
 
-    const error = ref("");
-
     function onSave() {
-      error.value = "We can't save yet, we don't have an API";
+      emit("onError", "We can't save yet, we don't have an API");
     }
     const years = Array.from({ length: 10 }, (_, i) => i + 2020);
     const Zipcode = computed({
@@ -181,7 +177,6 @@ export default {
 
     return {
       payment,
-      error,
       states,
       months,
       onSave,
