@@ -118,11 +118,12 @@
   </div>
 </template>
   <script>
-import { computed, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 import states from "@/lookup/states";
 import months from "@/lookup/months";
 import formatters from "@/formatters";
 import AddressView from "./AddressView";
+import state from "@/state";
 export default {
   components: {
     AddressView,
@@ -130,31 +131,20 @@ export default {
   emits: ["onError"],
   // this is for composition api
   setup(props, { emit }) {
-    const payment = ref({
-      shipping: {
-        fullName: "Shawn",
-        postalCode: "12345",
-      },
-      billing: {
-        sameAsShipping: false,
-      },
-      creditcard: {},
-    });
+    const payment = reactive(state);
 
     function onSave() {
-      emit("onError", "We can't save yet, we don't have an API");
+      state.errorMessage.value = "We can't save yet, we don't have an API";
     }
     const years = Array.from({ length: 10 }, (_, i) => i + 2020);
     const Zipcode = computed({
-      get: () => payment.value.postalCode,
+      get: () => payment.postalCode,
       set: (val) => {
         if (val && typeof val === "string") {
           if (val.length <= 5 || val.indexOf("-") > -1) {
-            payment.value.postalCode = val;
+            payment.postalCode = val;
           } else {
-            payment.value.postalCode = `${val.substring(0, 5)}-${val.substring(
-              5
-            )}`;
+            payment.postalCode = `${val.substring(0, 5)}-${val.substring(5)}`;
           }
         }
       },
@@ -162,15 +152,11 @@ export default {
 
     watch(
       // what to watch
-      () => payment.value.billing.sameAsShipping,
+      () => payment.billing.sameAsShipping,
       // What to do
       () => {
-        if (payment.value.billing.sameAsShipping) {
-          payment.value.billing.address1 = "";
-          payment.value.billing.address2 = "";
-          payment.value.billing.cityTown = "";
-          payment.value.billing.stateProvince = "";
-          payment.value.billing.postalCode = "";
+        if (payment.billing.sameAsShipping) {
+          payment.clear();
         }
       }
     );
